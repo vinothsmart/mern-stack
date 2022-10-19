@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/vinothsmart/mern-stack/issues"
   },
-  "homepage": "https://github.com/vinothsmart/mern-stack#readme"
+  "homepage": "https://github.com/vinothsmart/mern-stack#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.6.5"
+  }
 }
