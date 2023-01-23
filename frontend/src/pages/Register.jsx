@@ -1,5 +1,4 @@
-import { useCallback } from "react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { FaUser } from "react-icons/fa";
 
 function Register() {
@@ -35,7 +34,7 @@ function Register() {
         <h1>
           <FaUser /> Register
         </h1>
-        <p>please create an account</p>
+        <p>Please create an account</p>
       </section>
       <section className="form">
         <form onSubmit={handleSumbit}>
