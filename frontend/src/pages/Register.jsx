@@ -1,5 +1,10 @@
 import { useState, useCallback } from "react";
 import { FaUser } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { register, reset } from "../features/auth/authSlice";
+import { useEffect } from "react";
 
 function Register() {
   const [formData, setFromData] = useState({
@@ -8,6 +13,13 @@ function Register() {
     password: "",
     password2: "",
   });
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
 
   const handleChange = useCallback((e) => {
     setFromData((prev) => ({
@@ -20,13 +32,26 @@ function Register() {
     (e) => {
       e.preventDefault();
       if (formData.password !== formData.password2) {
-        console.log("Passwords do not match");
+        toast.error("Passwords do not match");
       } else {
-        console.log(formData);
+        const { name, email, password } = formData;
+        const userData = { name, email, password };
+        dispatch(register(userData));
       }
     },
-    [formData]
+    [dispatch, formData]
   );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (isSuccess || user) {
+      toast.success(message);
+      navigate("/");
+    }
+    dispatch(reset());
+  }, [dispatch, isError, isSuccess, message, navigate, user]);
 
   return (
     <>
