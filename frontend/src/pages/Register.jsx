@@ -48,7 +48,6 @@ function Register() {
       toast.error(message);
     }
     if (isSuccess || user) {
-      toast.success(message);
       navigate("/");
     }
     dispatch(reset());
