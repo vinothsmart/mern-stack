@@ -14,4 +14,9 @@ const authService = {
   register,
 };
 
+// Logout user
+const logout = () => {
+  localStorage.removeItem("user");
+};
+
 export default authService;
