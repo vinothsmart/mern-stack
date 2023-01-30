@@ -32,10 +32,17 @@ function Register() {
   const handleSumbit = useCallback(
     (e) => {
       e.preventDefault();
-      if (formData.password !== formData.password2) {
+      const { name, email, password, password2 } = formData;
+      if (password !== password2) {
         toast.error("Passwords do not match");
+      } else if (
+        name === "" ||
+        email === "" ||
+        password === "" ||
+        password2 === ""
+      ) {
+        toast.error("Fill all fileds");
       } else {
-        const { name, email, password } = formData;
         const userData = { name, email, password };
         dispatch(register(userData));
       }
