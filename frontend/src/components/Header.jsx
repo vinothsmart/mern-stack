@@ -5,15 +5,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 const Header = () => {
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
   const handleLogout = useCallback(() => {
     dispatch(logout());
     dispatch(reset());
-    navigation.push("/");
-  }, [dispatch, navigation]);
+    navigate.push("/");
+  }, [dispatch, navigate]);
 
   return (
     <header className="header">
