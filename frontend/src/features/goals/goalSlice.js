@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import goalService from "./goalService";
 
 const initialState = {
   goals: [],
@@ -8,6 +9,39 @@ const initialState = {
   message: "",
 };
 
+// Create new goal
+export const createGoal = createAsyncThunk(
+  "goals/create",
+  async (goalData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await goalService.create(goalData, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Get user goals
+export const getGoals = createAsyncThunk("goals/getAll", async (thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.user.token;
+    return await goalService.getGoals(token);
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
 export const goalSlice = createSlice({
   name: "goal",
   initialState,
@@ -16,59 +50,28 @@ export const goalSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase("goal/getAll/pending", (state) => {
+      .addCase(createGoal.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase("goal/getAll/fulfilled", (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.goals = action.payload;
-      })
-      .addCase("goal/getAll/rejected", (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase("goal/create/pending", (state) => {
-        state.isLoading = true;
-      })
-      .addCase("goal/create/fulfilled", (state, action) => {
+      .addCase(createGoal.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.goals.push(action.payload);
       })
-      .addCase("goal/create/rejected", (state, action) => {
+      .addCase(createGoal.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase("goal/update/fulfilled", (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.goals = state.goals.map((goal) => {
-          if (goal.id === action.payload.id) {
-            return action.payload;
-          }
-          return goal;
-        });
-      })
-      .addCase("goal/update/pending", (state) => {
+      .addCase(getGoals.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase("goal/update/rejected", (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase("goal/delete/pending", (state) => {
-        state.isLoading = true;
-      })
-      .addCase("goal/delete/fulfilled", (state, action) => {
+      .addCase(getGoals.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.goals = state.goals.filter((goal) => goal.id !== action.payload);
+        state.goals = action.payload;
       })
-      .addCase("goal/delete/rejected", (state, action) => {
+      .addCase(getGoals.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
