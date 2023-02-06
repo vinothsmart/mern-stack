@@ -29,9 +29,14 @@ function Login() {
   const handleSumbit = useCallback(
     (e) => {
       e.preventDefault();
-      console.log(formData);
+
+      const userData = {
+        email: formData.email,
+        password: formData.password,
+      };
+      dispatch(login(userData));
     },
-    [formData]
+    [dispatch, formData]
   );
 
   useEffect(() => {
@@ -43,6 +48,8 @@ function Login() {
     }
     dispatch(reset());
   }, [dispatch, isError, isSuccess, message, navigate, user]);
+
+  if (isLoading) return <Spinner />;
 
   return (
     <>
