@@ -1,6 +1,6 @@
 import api from "../../app/api";
 
-const API_URL = "api/goals";
+const API_URL = "api/goals/";
 
 // Create new goal
 const create = async (goalData, token) => {

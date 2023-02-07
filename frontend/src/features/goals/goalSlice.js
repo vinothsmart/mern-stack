@@ -43,10 +43,10 @@ export const getGoals = createAsyncThunk("goals/getAll", async (thunkAPI) => {
 });
 
 export const goalSlice = createSlice({
-  name: "goal",
+  name: "goals",
   initialState,
   reducers: {
-    reset: (state) => initialState,
+    reset: () => initialState,
   },
   extraReducers: (builder) => {
     builder
