@@ -16,7 +16,7 @@ function Dashboard() {
   );
 
   useEffect(() => {
-    if (isError) console.log(message);
+    // if (isError) console.log(message);
     if (!user) navigate("/login");
     dispatch(getGoals());
     return () => dispatch(reset());
@@ -31,8 +31,7 @@ function Dashboard() {
         <p>Goals Dashboard</p>
       </section>
       <GoalForm />
-
-      {/* <section className="content">
+      <section className="content">
         {goals.length > 0 ? (
           <div className="goals">
             {goals.map((goal) => (
@@ -42,7 +41,7 @@ function Dashboard() {
         ) : (
           <h3>You have not set any goals</h3>
         )}
-      </section> */}
+      </section>
     </>
   );
 }
